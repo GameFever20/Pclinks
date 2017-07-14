@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "155009380156",
+    "firebase_url": "https://pc-links.firebaseio.com",
+    "project_id": "pc-links",
+    "storage_bucket": "pc-links.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:155009380156:android:6f7ea7017062faff",
+        "android_client_info": {
+          "package_name": "com.tech_creation.pclinks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "155009380156-7o3skt5vjpjaet7iqc5o4sq7pmk47j6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tech_creation.pclinks",
+            "certificate_hash": "34c65added53d7d8a8bcf517aef3b154b1aed67f"
+          }
+        },
+        {
+          "client_id": "155009380156-06tphb9t1c5suhmm5tav2o248im20aa3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBerlmxwYqrWG3IoqSQb7L7z5JEcwsakC0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "155009380156-06tphb9t1c5suhmm5tav2o248im20aa3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
