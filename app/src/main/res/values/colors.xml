@@ -2,12 +2,15 @@
 <resources>
     <color name="colorPrimary">#f45055</color>
     <color name="colorPrimaryDark">#df464b</color>
-    <color name="colorAccent">#e7cd07</color>
+    <color name="colorAccent">#26d782</color>
 
     <color name="white">#ffffff</color>
     <color name="light_white">#f4f4f4</color>
 
     <color name="black">#282828</color>
+
+    <color name="transparent">#00ffffff</color>
+
 
     <color name="red">#df4a32</color>
     <color name="faded_red">#dadf4a32</color>

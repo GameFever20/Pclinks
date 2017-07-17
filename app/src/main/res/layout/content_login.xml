@@ -27,7 +27,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
                 android:layout_weight="1"
-                android:src="@drawable/pcicon"
+                android:src="@drawable/pcnew_icon"
 
                 />
 

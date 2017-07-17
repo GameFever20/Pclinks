@@ -271,7 +271,8 @@ public class MainActivity extends AppCompatActivity
     private boolean validateForm(String messageString) {
         if (messageString != null) {
             if (messageString.isEmpty()) {
-                CoordinatorLayout coordinatorLayout =(CoordinatorLayout) findViewById(R.id.coordinateLayout);
+
+                //  CoordinatorLayout coordinatorLayout =(CoordinatorLayout) findViewById(R.id.coordinateLayout);
 
                 Toast.makeText(this, "Message text empty", Toast.LENGTH_SHORT).show();
                 /*Snackbar snackbar = Snackbar
@@ -288,7 +289,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 return true;
             }
-        }else{
+        } else {
             return false;
         }
     }
@@ -328,9 +329,9 @@ public class MainActivity extends AppCompatActivity
     public void sendButtonClick(View view) {
 
         CustomMessage customMessage = createCustomMessage();
-        if(customMessage != null) {
+        if (customMessage != null) {
             uploadCustomMessage(customMessage);
-        }else{
+        } else {
 
         }
     }
@@ -349,7 +350,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        // getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
@@ -374,9 +375,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_help) {
+            // Handle the help action
+            Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_send_me_link) {
+            sendHelpText();
 
         } else if (id == R.id.nav_slideshow) {
 
@@ -385,13 +389,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_rate_us) {
             rateUs();
         } else if (id == R.id.nav_share) {
-
             shareApp();
-
-        } else if (id == R.id.nav_send_me_link) {
-
-            sendHelpText();
-
         }
 
 

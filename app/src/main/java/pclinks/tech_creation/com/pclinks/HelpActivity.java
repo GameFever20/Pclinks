@@ -31,11 +31,11 @@ public class HelpActivity extends AppCompatActivity {
 
 
     public void sendChromeLink(View view) {
-        String helpText = getString(R.string.pclink_help_text);
+        String helpText = getString(R.string.pclink_help_downloadlink_text);
 
         final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
         emailIntent.setType("text/plain");
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Pc links App Help");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Pc link Chrome Extension ");
 
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, helpText);
 

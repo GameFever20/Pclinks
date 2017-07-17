@@ -10,8 +10,11 @@
 
 
     <string name="pclink_help_text">
+        You need to Sign in on PcLink from your Google account then click on  Chrome Extension Link  from the menu to start the sharing of text.\nSign in to Chrome Extension from the same google account as provided in PcLink.
+    </string>
 
-
+    <string name="pclink_help_downloadlink_text">
+        You need to Download the Pc link Chrome Extension from the given link \n https://chrome.google.com/webstore/detail/pc-links/obglmabjiehobkpibcggmfmpefagefib \n(Open it in computer),which you will receive in your mail \nThen Sign in on chrome extension from same google account as you provided in PcLink.
 
     </string>
     <string name="title_activity_help">HelpActivity</string>
