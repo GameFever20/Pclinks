@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    android:background="@color/colorPrimary"
+    android:background="@drawable/newpcbg"
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="pclinks.tech_creation.com.pclinks.LoginActivity"
@@ -22,8 +22,8 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="100dp"
                 android:layout_weight="1"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_weight="1"
-                android:text="Welcome!"
+                android:text="Pc Link"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="35sp"
@@ -53,6 +53,21 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="17sp"
+                android:textStyle="normal" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginTop="100dp"
+                android:background="@drawable/rounded_edittext"
+                android:onClick="googleSignInButtonClick"
+                android:text="Google Sign In"
+                android:textAlignment="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
             <LinearLayout
@@ -63,7 +78,8 @@
                 android:layout_marginTop="140dp"
                 android:background="@color/red"
                 android:onClick="googleSignInButtonClick"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -75,9 +91,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
                     android:layout_margin="2dp"
-                    android:background="@color/white">
+                    android:background="@color/white"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="match_parent"
