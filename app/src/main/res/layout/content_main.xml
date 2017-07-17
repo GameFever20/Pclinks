@@ -10,6 +10,18 @@
     tools:context="pclinks.tech_creation.com.pclinks.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-8455191357100024/1312572798">
+    </com.google.android.gms.ads.AdView>
+
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/mainActivity_message_recyclerView"
         android:layout_width="match_parent"
@@ -49,6 +61,7 @@
                     android:minLines="1"
                     android:maxLines="5"
                     android:hint="Text to send"
+                    android:autoLink="all"
                     android:textColor="@color/black"
                     android:id="@+id/mainActivity_messageText_EditText"
                     android:layout_height="wrap_content" />

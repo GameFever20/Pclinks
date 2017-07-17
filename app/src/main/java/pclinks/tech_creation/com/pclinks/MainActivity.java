@@ -14,6 +14,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +27,11 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -51,11 +57,14 @@ public class MainActivity extends AppCompatActivity
 
     CustomMessageAdapter customMessageAdapter;
 
+    private AdView mAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+initializeads();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -81,6 +90,53 @@ public class MainActivity extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.mainActivity_message_recyclerView);
 
         initializeActivity();
+    }
+
+    private void initializeads() {
+
+        AdView mAdView = (AdView) findViewById(R.id.adView4);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                // Code to be executed when an ad finishes loading.
+                Log.i("Ads", "onAdLoaded");
+                Toast.makeText(MainActivity.this, "Loaded", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                // Code to be executed when an ad request fails.
+                Log.i("Ads", "onAdFailedToLoad");
+                Toast.makeText(MainActivity.this, "failed Loaded - "+errorCode, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onAdOpened() {
+                // Code to be executed when an ad opens an overlay that
+                // covers the screen.
+                Log.i("Ads", "onAdOpened");
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                // Code to be executed when the user has left the app.
+                Log.i("Ads", "onAdLeftApplication");
+            }
+
+            @Override
+            public void onAdClosed() {
+                // Code to be executed when when the user is about to return
+                // to the app after tapping on an ad.
+                Log.i("Ads", "onAdClosed");
+                Toast.makeText(MainActivity.this, " close Loaded", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
     }
 
     private void initializeActivity() {
@@ -194,6 +250,9 @@ public class MainActivity extends AppCompatActivity
                     customMessageArrayList.add(customMessage);
                     scrollRecyclerViewToLast();
                     checkforRateUsDialog();
+                    EditText editText = (EditText) findViewById(R.id.mainActivity_messageText_EditText);
+                    editText.setText(null);
+
                 }
             }
 
@@ -271,7 +330,7 @@ public class MainActivity extends AppCompatActivity
     private boolean validateForm(String messageString) {
         if (messageString != null) {
             if (messageString.isEmpty()) {
-                CoordinatorLayout coordinatorLayout =(CoordinatorLayout) findViewById(R.id.coordinateLayout);
+                CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinateLayout);
 
                 Toast.makeText(this, "Message text empty", Toast.LENGTH_SHORT).show();
                 /*Snackbar snackbar = Snackbar
@@ -288,7 +347,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 return true;
             }
-        }else{
+        } else {
             return false;
         }
     }
@@ -328,9 +387,9 @@ public class MainActivity extends AppCompatActivity
     public void sendButtonClick(View view) {
 
         CustomMessage customMessage = createCustomMessage();
-        if(customMessage != null) {
+        if (customMessage != null) {
             uploadCustomMessage(customMessage);
-        }else{
+        } else {
 
         }
     }
@@ -381,6 +440,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
+            openHelpActivity();
 
         } else if (id == R.id.nav_rate_us) {
             rateUs();
@@ -461,10 +521,13 @@ public class MainActivity extends AppCompatActivity
 
 
     public void scrollRecyclerViewToLast() {
+        try {
+            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+            customMessageAdapter.notifyDataSetChanged();
 
-        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-        customMessageAdapter.notifyDataSetChanged();
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
