@@ -23,7 +23,7 @@
         app:cardElevation="5dp"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
-        app:cardBackgroundColor="@color/colorPrimaryDark"
+        app:cardBackgroundColor="@color/colorPrimary"
         app:cardCornerRadius="0dp"
         android:layout_height="wrap_content">
 
