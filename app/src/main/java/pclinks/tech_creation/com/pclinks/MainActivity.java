@@ -423,7 +423,7 @@ public class MainActivity extends AppCompatActivity
 
     private void sendHelpText() {
 
-        String helpText = getString(R.string.pclink_help_text);
+        String helpText = getString(R.string.pclink_help_downloadlink_text);
 
         final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
         emailIntent.setType("text/plain");
