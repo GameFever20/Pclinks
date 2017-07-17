@@ -29,6 +29,7 @@ public class HelpActivity extends AppCompatActivity {
         });
     }
 
+
     public void sendChromeLink(View view) {
         String helpText = getString(R.string.pclink_help_text);
 
