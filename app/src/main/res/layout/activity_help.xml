@@ -31,4 +31,18 @@
         android:visibility="gone"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:onClick="sendChromeLink"
+        android:text="send chrome Link"
+        android:textColor="@color/white"
+        android:layout_gravity="bottom"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        />
+
+
+
 </android.support.design.widget.CoordinatorLayout>

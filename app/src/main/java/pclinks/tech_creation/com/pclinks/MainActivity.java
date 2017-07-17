@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity
             } else {
                 return true;
             }
-        } else {
+        }else{
             return false;
         }
     }
@@ -459,10 +459,13 @@ public class MainActivity extends AppCompatActivity
 
 
     public void scrollRecyclerViewToLast() {
+        try {
+            recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+            customMessageAdapter.notifyDataSetChanged();
 
-        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
-        customMessageAdapter.notifyDataSetChanged();
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
