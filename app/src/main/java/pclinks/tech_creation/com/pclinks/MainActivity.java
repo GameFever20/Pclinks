@@ -2,9 +2,13 @@ package pclinks.tech_creation.com.pclinks;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -37,11 +41,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    final int messageLimit = 10;
+
     ArrayList<CustomMessage> customMessageArrayList = new ArrayList<>();
 
     RecyclerView recyclerView;
 
     CustomMessageAdapter customMessageAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +87,7 @@ public class MainActivity extends AppCompatActivity
 
     private void downloadCustomMessage() {
 
-        new Firebasehandler().downloadCustomMessageList(getUserUID(), 20, new Firebasehandler.OnCustomMessageListener() {
+        new Firebasehandler().downloadCustomMessageList(getUserUID(), messageLimit, new Firebasehandler.OnCustomMessageListener() {
             @Override
             public void onCustomMessageUpload(boolean isSuccessful) {
 
@@ -94,6 +101,7 @@ public class MainActivity extends AppCompatActivity
 
                     customMessageArrayList = messageArrayList;
                     initializeRecyclerView();
+                    checkforHelpDialogue();
                 } else {
                     Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
@@ -106,6 +114,70 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void checkforHelpDialogue() {
+
+        if (customMessageArrayList.size() == 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+// Add the buttons
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+                    openHelpActivity();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+
+
+            String helpdialogText = getString(R.string.help_dialog_text);
+            builder.setTitle("Help");
+            builder.setMessage(helpdialogText);
+
+// Create the AlertDialog
+            AlertDialog dialog = builder.create();
+
+            dialog.show();
+        }
+
+    }
+
+
+
+
+    private void checkforRateUsDialog() {
+        if (customMessageArrayList.size() == (messageLimit-1)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+// Add the buttons
+            builder.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User clicked OK button
+
+                    rateUs();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    // User cancelled the dialog
+                }
+            });
+
+
+            String helpdialogText = getString(R.string.rate_dialog_text);
+            builder.setTitle("Rate us");
+            builder.setMessage(helpdialogText);
+
+// Create the AlertDialog
+            AlertDialog dialog = builder.create();
+
+            dialog.show();
+        }
+    }
+
+
+
     public void uploadCustomMessage(final CustomMessage customMessage) {
 
         new Firebasehandler().uploadCustomMessage(customMessage, new Firebasehandler.OnCustomMessageListener() {
@@ -114,6 +186,7 @@ public class MainActivity extends AppCompatActivity
                 if (isSuccessful) {
                     customMessageArrayList.add(customMessage);
                     customMessageAdapter.notifyDataSetChanged();
+                    checkforRateUsDialog();
                 }
             }
 
@@ -129,6 +202,8 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
+
+
 
     private void initializeRecyclerView() {
 
@@ -278,16 +353,73 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_manage) {
 
+        } else if (id == R.id.nav_rate_us) {
+            rateUs();
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+            shareApp();
 
+        } else if (id == R.id.nav_send_me_link) {
+
+            sendHelpText();
 
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void rateUs() {
+
+
+        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
+    }
+
+    private void shareApp() {
+        int applicationNameId = this.getApplicationInfo().labelRes;
+        final String appPackageName = this.getPackageName();
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_SUBJECT, getString(applicationNameId));
+        String text = "Install this cool application: ";
+        String link = "https://play.google.com/store/apps/details?id=" + appPackageName;
+        i.putExtra(Intent.EXTRA_TEXT, text + "\n " + link);
+        startActivity(Intent.createChooser(i, "Share link:"));
+    }
+
+    private void sendHelpText() {
+
+        String helpText = getString(R.string.pclink_help_text);
+
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Pc links App Help");
+
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, helpText);
+
+
+        emailIntent.setType("message/rfc822");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent,
+                    "Send email using..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(MainActivity.this,
+                    "No email clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void openHelpActivity() {
+        Intent intent =new Intent(MainActivity.this ,HelpActivity.class);
+        startActivity(intent);
     }
 
     public String getUserUID() {
@@ -297,6 +429,8 @@ public class MainActivity extends AppCompatActivity
 
         return currentUser.getUid();
     }
+
+
 
 
 }

@@ -7,4 +7,18 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_login">LoginActivity</string>
+
+
+    <string name="pclink_help_text">
+
+
+
+    </string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="cancel">cancel</string>
+    <string name="ok">Show me</string>
+    <string name="help_dialog_text">Some text</string>
+    <string name="rate_dialog_text">Like this app \\n rate us and share your thoughts</string>
+
+
 </resources>
