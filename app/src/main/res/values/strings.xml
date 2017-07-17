@@ -16,9 +16,9 @@
     </string>
     <string name="title_activity_help">HelpActivity</string>
     <string name="cancel">cancel</string>
-    <string name="ok">Show me</string>
-    <string name="help_dialog_text">Some text</string>
-    <string name="rate_dialog_text">Like this app \\n rate us and share your thoughts</string>
+    <string name="ok">Ok</string>
+    <string name="help_dialog_text">Read our get started guided to setup your system \n You can later open help from navigation menu</string>
+    <string name="rate_dialog_text">Like this app \n rate us and share your thoughts</string>
 
 
 </resources>
