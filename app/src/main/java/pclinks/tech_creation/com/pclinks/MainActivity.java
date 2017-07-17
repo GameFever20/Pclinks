@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -82,8 +84,14 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeActivity() {
+        //initializeEditText();
         downloadCustomMessage();
 
+    }
+
+    private void initializeEditText() {
+        EditText editText = (EditText) findViewById(R.id.mainActivity_messageText_EditText);
+        editText.setText(pasteFromClipboard());
     }
 
     private void downloadCustomMessage() {
@@ -98,10 +106,11 @@ public class MainActivity extends AppCompatActivity
             public void onCustomMessageListDownLoad(ArrayList<CustomMessage> messageArrayList, boolean isSuccessful) {
 
                 if (isSuccessful) {
-                    Collections.reverse(messageArrayList);
+                    // Collections.reverse(messageArrayList);
 
                     customMessageArrayList = messageArrayList;
                     initializeRecyclerView();
+
                     checkforHelpDialogue();
                 } else {
                     Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -146,10 +155,8 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-
     private void checkforRateUsDialog() {
-        if (customMessageArrayList.size() == (messageLimit-1)) {
+        if (customMessageArrayList.size() == (messageLimit - 1)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
 // Add the buttons
             builder.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
@@ -178,7 +185,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     public void uploadCustomMessage(final CustomMessage customMessage) {
 
         new Firebasehandler().uploadCustomMessage(customMessage, new Firebasehandler.OnCustomMessageListener() {
@@ -186,7 +192,7 @@ public class MainActivity extends AppCompatActivity
             public void onCustomMessageUpload(boolean isSuccessful) {
                 if (isSuccessful) {
                     customMessageArrayList.add(customMessage);
-                    customMessageAdapter.notifyDataSetChanged();
+                    scrollRecyclerViewToLast();
                     checkforRateUsDialog();
                 }
             }
@@ -205,10 +211,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     private void initializeRecyclerView() {
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.mainActivity_message_recyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.mainActivity_message_recyclerView);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -234,6 +239,8 @@ public class MainActivity extends AppCompatActivity
             }
         }));
 
+        scrollRecyclerViewToLast();
+
 
     }
 
@@ -243,7 +250,7 @@ public class MainActivity extends AppCompatActivity
         EditText editText = (EditText) findViewById(R.id.mainActivity_messageText_EditText);
         String messageString = editText.getText().toString().trim();
         if (!validateForm(messageString)) {
-            customMessage.setCustomMessageText(pasteFromClipboard());
+            return null;
         } else {
             customMessage.setCustomMessageText(messageString);
         }
@@ -262,11 +269,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     private boolean validateForm(String messageString) {
-        if (messageString.isEmpty()) {
-            Toast.makeText(this, "Message text empty", Toast.LENGTH_SHORT).show();
+        if (messageString != null) {
+            if (messageString.isEmpty()) {
+                CoordinatorLayout coordinatorLayout =(CoordinatorLayout) findViewById(R.id.coordinateLayout);
+
+                Toast.makeText(this, "Message text empty", Toast.LENGTH_SHORT).show();
+                /*Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Paste text from clipboard", Snackbar.LENGTH_LONG)
+                        .setAction("paste", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                initializeEditText();
+                            }
+                        });
+
+                snackbar.show();*/
+                return false;
+            } else {
+                return true;
+            }
+        }else{
             return false;
-        } else {
-            return true;
         }
     }
 
@@ -304,7 +327,12 @@ public class MainActivity extends AppCompatActivity
 
     public void sendButtonClick(View view) {
 
-        uploadCustomMessage(createCustomMessage());
+        CustomMessage customMessage = createCustomMessage();
+        if(customMessage != null) {
+            uploadCustomMessage(customMessage);
+        }else{
+
+        }
     }
 
 
@@ -419,7 +447,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void openHelpActivity() {
-        Intent intent =new Intent(MainActivity.this ,HelpActivity.class);
+        Intent intent = new Intent(MainActivity.this, HelpActivity.class);
         startActivity(intent);
     }
 
@@ -432,6 +460,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    public void scrollRecyclerViewToLast() {
 
+        recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+        customMessageAdapter.notifyDataSetChanged();
+
+    }
 
 }
