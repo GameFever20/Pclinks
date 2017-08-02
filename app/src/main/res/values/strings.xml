@@ -6,7 +6,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login">Pc links</string>
 
 
     <string name="pclink_help_text">
@@ -17,7 +17,7 @@
         You need to Download the Pc link Chrome Extension from the given link \n https://chrome.google.com/webstore/detail/pc-links/obglmabjiehobkpibcggmfmpefagefib \n(Open it in computer),which you will receive in your mail \nThen Sign in on chrome extension from same google account as you provided in PcLink.
 
     </string>
-    <string name="title_activity_help">HelpActivity</string>
+    <string name="title_activity_help">Help</string>
     <string name="cancel">cancel</string>
     <string name="ok">Ok</string>
     <string name="help_dialog_text">Read our get started guided to setup your system \n You can later open help from navigation menu</string>

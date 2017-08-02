@@ -1,5 +1,6 @@
 package pclinks.tech_creation.com.pclinks;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+
 import io.fabric.sdk.android.Fabric;
 
 public class LoginActivity extends AppCompatActivity {
@@ -62,12 +64,14 @@ public class LoginActivity extends AppCompatActivity {
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
+    ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Fabric.with(this, new Crashlytics());
         setContentView(R.layout.activity_login);
-
+        progressDialog = new ProgressDialog(this);
         // Views
         //mStatusTextView = (TextView) findViewById(R.id.status);
         //mDetailTextView = (TextView) findViewById(R.id.detail);
@@ -136,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
         // [START_EXCLUDE silent]
-        showProgressDialog();
+        showProgressDialog("Signing in...");
         // [END_EXCLUDE]
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -164,9 +168,7 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
-    private void showProgressDialog() {
 
-    }
     // [END auth_with_google]
 
     // [START signin]
@@ -213,7 +215,7 @@ public class LoginActivity extends AppCompatActivity {
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
             findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);*/
 
-            Toast.makeText(this, "Signed in as "+user.getEmail(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Signed in as " + user.getEmail(), Toast.LENGTH_SHORT).show();
             openNextActivity();
         } else {
             /*mStatusTextView.setText(R.string.signed_out);
@@ -225,19 +227,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void openNextActivity() {
-        Intent intent =new Intent(LoginActivity.this ,MainActivity.class);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
 
     private void hideProgressDialog() {
-
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
+    private void showProgressDialog(String message) {
 
-
-
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
 
     public void googleSignInButtonClick(View view) {
         signIn();

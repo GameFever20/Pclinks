@@ -1,7 +1,9 @@
 package pclinks.tech_creation.com.pclinks;
 
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,9 +26,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -58,12 +63,15 @@ public class MainActivity extends AppCompatActivity
     CustomMessageAdapter customMessageAdapter;
 
     private AdView mAdView;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-initializeads();
+        initializeads();
+
+        progressDialog = new ProgressDialog(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -102,14 +110,15 @@ initializeads();
             public void onAdLoaded() {
                 // Code to be executed when an ad finishes loading.
                 Log.i("Ads", "onAdLoaded");
-                Toast.makeText(MainActivity.this, "Loaded", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "Loaded", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onAdFailedToLoad(int errorCode) {
                 // Code to be executed when an ad request fails.
                 Log.i("Ads", "onAdFailedToLoad");
-                Toast.makeText(MainActivity.this, "failed Loaded - "+errorCode, Toast.LENGTH_SHORT).show();
+                Crashlytics.log("Ad loading failed");
+                //Toast.makeText(MainActivity.this, "failed Loaded - " + errorCode, Toast.LENGTH_SHORT).show();
 
             }
 
@@ -131,7 +140,7 @@ initializeads();
                 // Code to be executed when when the user is about to return
                 // to the app after tapping on an ad.
                 Log.i("Ads", "onAdClosed");
-                Toast.makeText(MainActivity.this, " close Loaded", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, " close Loaded", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -141,9 +150,14 @@ initializeads();
 
     private void initializeActivity() {
         //initializeEditText();
+        showProgressDialog("Fetching ...");
         downloadCustomMessage();
 
+        setNavigationGmailID();
+
     }
+
+
 
     private void initializeEditText() {
         EditText editText = (EditText) findViewById(R.id.mainActivity_messageText_EditText);
@@ -166,7 +180,7 @@ initializeads();
 
                     customMessageArrayList = messageArrayList;
                     initializeRecyclerView();
-
+                    hideProgressDialog();
                     checkforHelpDialogue();
                 } else {
                     Toast.makeText(MainActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -252,6 +266,18 @@ initializeads();
                     checkforRateUsDialog();
                     EditText editText = (EditText) findViewById(R.id.mainActivity_messageText_EditText);
                     editText.setText(null);
+
+                    try {
+                        InputMethodManager inputManager =
+                                (InputMethodManager) MainActivity.this.
+                                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                        inputManager.hideSoftInputFromWindow(
+                                MainActivity.this.getCurrentFocus().getWindowToken(),
+                                InputMethodManager.HIDE_NOT_ALWAYS);
+                        editText.clearFocus();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                 }
             }
@@ -348,7 +374,7 @@ initializeads();
             } else {
                 return true;
             }
-        }else{
+        } else {
             return false;
         }
     }
@@ -486,7 +512,7 @@ initializeads();
 
         final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
         emailIntent.setType("text/plain");
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Pc links App Help");
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Pc links Chrome extension");
 
         emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, helpText);
 
@@ -527,4 +553,19 @@ initializeads();
         }
     }
 
+    private void hideProgressDialog() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
+    private void showProgressDialog(String message) {
+
+        progressDialog.setMessage(message);
+        progressDialog.show();
+    }
+    private void setNavigationGmailID() {
+
+
+    }
 }
