@@ -75,7 +75,7 @@ public class CustomMessageAdapter extends RecyclerView.Adapter<CustomMessageAdap
         if (customMessage.getMessageType() == 0){
             holder.backgroundCard.setCardBackgroundColor(Color.WHITE);
 
-        }else if(customMessage.getMessageType() == 101) {
+        }else if(customMessage.getMessageType() >100 && customMessage.getMessageType() <1000) {
             holder.backgroundCard.setCardBackgroundColor(Color.GREEN);
         }
         else{

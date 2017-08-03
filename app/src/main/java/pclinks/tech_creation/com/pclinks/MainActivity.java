@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    final int messageLimit = 10;
+    final int messageLimit = 14;
 
     ArrayList<CustomMessage> customMessageArrayList = new ArrayList<>();
 
@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity
         initializeActivity();
 
         FirebaseMessaging.getInstance().subscribeToTopic("user_" + getUserUID());
+        FirebaseMessaging.getInstance().subscribeToTopic("offer");
     }
 
     private void initializeads() {
@@ -236,10 +237,10 @@ public class MainActivity extends AppCompatActivity
             FirebaseUser firebaseUser = getCurrentUser();
 
             CustomMessage customMessage = new CustomMessage();
-            customMessage.setCustomMessageText("Hello " + firebaseUser.getDisplayName()+
+            customMessage.setCustomMessageText("Hello " + firebaseUser.getDisplayName() +
                     ",\n\nWe have sent you chrome extension link to your Email address - " +
                     firebaseUser.getEmail() +
-                    "\nDownload extension to start using Pc links "+
+                    "\nDownload extension to start using Pc links " +
                     "\nExchange text message or link between pc and mobile using Pc links  ");
             customMessage.setCustomMessageUserUID("Admin");
             customMessage.setCustomMessageDevice("");
@@ -288,8 +289,8 @@ public class MainActivity extends AppCompatActivity
 
 
     private void checkforRateUsDialog() {
-        if (customMessageArrayList.size() == (messageLimit - 1)) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if (customMessageArrayList.size() == (messageLimit - 7)) {
+           /* AlertDialog.Builder builder = new AlertDialog.Builder(this);
 // Add the buttons
             builder.setPositiveButton("Rate", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -312,8 +313,36 @@ public class MainActivity extends AppCompatActivity
 // Create the AlertDialog
             AlertDialog dialog = builder.create();
 
-            dialog.show();
+            dialog.show();*/
+
+            CustomMessage customMessage;
+            customMessage = new CustomMessage();
+            customMessage.setCustomMessageText("Like Pc links ?" +
+                    "\nRate us and share your thoughts ");
+            customMessage.setCustomMessageUserUID("Admin");
+            customMessage.setCustomMessageDevice("click to rate");
+            customMessage.setMessageTime(Calendar.getInstance().getTimeInMillis());
+            customMessage.setMessageType(102);
+
+            customMessageArrayList.add(customMessageArrayList.size() - 1, customMessage);
+
+            customMessageAdapter.notifyDataSetChanged();
+        }else if (customMessageArrayList.size() ==(messageLimit - 1)){
+
+            CustomMessage customMessage;
+            customMessage = new CustomMessage();
+            customMessage.setCustomMessageText("Like Pc links ?" +
+                    "\nShare Pc link app with your friends ");
+            customMessage.setCustomMessageUserUID("Admin");
+            customMessage.setCustomMessageDevice("click to share");
+            customMessage.setMessageTime(Calendar.getInstance().getTimeInMillis());
+            customMessage.setMessageType(103);
+
+            customMessageArrayList.add(customMessageArrayList.size() - 1, customMessage);
         }
+
+
+
     }
 
 
@@ -414,6 +443,10 @@ public class MainActivity extends AppCompatActivity
 
                     openHelpActivity();
 
+                }else if (customMessage.getMessageType() == 102){
+                    rateUs();
+                }else if(customMessage.getMessageType() == 103){
+                    shareApp();
                 }
 
 
@@ -663,8 +696,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void hideProgressDialog() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
+        try {
+            if (progressDialog != null) {
+                progressDialog.dismiss();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
