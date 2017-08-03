@@ -362,10 +362,13 @@ public class MainActivity extends AppCompatActivity
 
     public void uploadCustomMessage(final CustomMessage customMessage) {
 
+        showProgressDialog("Sending message..");
+
         new Firebasehandler().uploadCustomMessage(customMessage, new Firebasehandler.OnCustomMessageListener() {
             @Override
             public void onCustomMessageUpload(boolean isSuccessful) {
                 if (isSuccessful) {
+                    hideProgressDialog();
                     customMessageArrayList.add(customMessage);
                     scrollRecyclerViewToLast();
                     checkforRateUsDialog();
