@@ -53,7 +53,7 @@ dependencies {
 
     testCompile 'junit:junit:4.12'
 
-    compile 'com.tapadoo.android:alerter:1.0.6'
+
 
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;

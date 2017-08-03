@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.NativeExpressAdView;
+
 import java.util.ArrayList;
 
 import pclinks.tech_creation.com.pclinks.R;
@@ -39,7 +42,6 @@ public class CustomMessageAdapter extends RecyclerView.Adapter<CustomMessageAdap
             messageTimeStamp =(TextView)view.findViewById(R.id.customAdapter_messageTime_textView);
 
             backgroundCard =(CardView)view.findViewById(R.id.customAdapter_cardView);
-
 
         }
 
@@ -75,9 +77,12 @@ public class CustomMessageAdapter extends RecyclerView.Adapter<CustomMessageAdap
 
         }else if(customMessage.getMessageType() == 101) {
             holder.backgroundCard.setCardBackgroundColor(Color.GREEN);
-        }else{
+        }
+        else{
             holder.backgroundCard.setCardBackgroundColor(Color.WHITE);
         }
+
+
     }
 
 

@@ -44,7 +44,6 @@ import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.tapadoo.alerter.Alerter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -105,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
         initializeActivity();
 
-        FirebaseMessaging.getInstance().subscribeToTopic("user_"+getUserUID());
+        FirebaseMessaging.getInstance().subscribeToTopic("user_" + getUserUID());
     }
 
     private void initializeads() {
@@ -201,6 +200,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+
     private void checkforHelpDialogue() {
 
     /*    if (customMessageArrayList.size() == 0) {
@@ -233,10 +233,14 @@ public class MainActivity extends AppCompatActivity
 
             //create and show different custom messge to user for easy navigation
 
-            FirebaseUser firebaseUser =getCurrentUser();
+            FirebaseUser firebaseUser = getCurrentUser();
 
             CustomMessage customMessage = new CustomMessage();
-            customMessage.setCustomMessageText("Hello "+firebaseUser.getDisplayName());
+            customMessage.setCustomMessageText("Hello " + firebaseUser.getDisplayName()+
+                    ",\n\nWe have sent you chrome extension link to your Email address - " +
+                    firebaseUser.getEmail() +
+                    "\nDownload extension to start using Pc links "+
+                    "\nExchange text message or link between pc and mobile using Pc links  ");
             customMessage.setCustomMessageUserUID("Admin");
             customMessage.setCustomMessageDevice("");
             customMessage.setMessageTime(Calendar.getInstance().getTimeInMillis());
@@ -244,9 +248,9 @@ public class MainActivity extends AppCompatActivity
 
             customMessageArrayList.add(customMessage);
 
-
+/*
             customMessage = new CustomMessage();
-            customMessage.setCustomMessageText("We have sent you chrome extension link to your Email address - "+firebaseUser.getEmail() + "\nDownload extension to star using Pc links ");
+            customMessage.setCustomMessageText("We have sent you chrome extension link to your Email address - " + firebaseUser.getEmail() + "\nDownload extension to star using Pc links ");
 
             customMessage.setCustomMessageUserUID("Admin");
             customMessage.setCustomMessageDevice("");
@@ -263,7 +267,7 @@ public class MainActivity extends AppCompatActivity
             customMessage.setMessageTime(Calendar.getInstance().getTimeInMillis());
             customMessage.setMessageType(100);
 
-            customMessageArrayList.add(customMessage);
+            customMessageArrayList.add(customMessage);*/
 
 
             customMessage = new CustomMessage();
@@ -356,11 +360,8 @@ public class MainActivity extends AppCompatActivity
 
     private void createNotification(String customMessageText) {
         Intent intent = new Intent(this, NotificationActivity.class);
-        intent.putExtra("message",customMessageText);
+        intent.putExtra("message", customMessageText);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
-
-
-
 
 
         Notification notification = new NotificationCompat.Builder(this)
@@ -643,7 +644,7 @@ public class MainActivity extends AppCompatActivity
         return currentUser.getUid();
     }
 
-    public FirebaseUser getCurrentUser(){
+    public FirebaseUser getCurrentUser() {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 
