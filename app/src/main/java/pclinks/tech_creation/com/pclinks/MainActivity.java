@@ -39,6 +39,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.tapadoo.alerter.Alerter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -158,7 +159,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     private void initializeEditText() {
         EditText editText = (EditText) findViewById(R.id.mainActivity_messageText_EditText);
         editText.setText(pasteFromClipboard());
@@ -196,9 +196,8 @@ public class MainActivity extends AppCompatActivity
 
     private void checkforHelpDialogue() {
 
-        if (customMessageArrayList.size() == 0) {
+    /*    if (customMessageArrayList.size() == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-// Add the buttons
             builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
                     // User clicked OK button
@@ -216,11 +215,63 @@ public class MainActivity extends AppCompatActivity
             builder.setTitle("Help");
             builder.setMessage(helpdialogText);
 
-// Create the AlertDialog
             AlertDialog dialog = builder.create();
 
             dialog.show();
+
+        }*/
+
+
+        if (customMessageArrayList.size() == 0) {
+
+            //create and show different custom messge to user for easy navigation
+
+            FirebaseUser firebaseUser =getCurrentUser();
+
+            CustomMessage customMessage = new CustomMessage();
+            customMessage.setCustomMessageText("Hello "+firebaseUser.getDisplayName());
+            customMessage.setCustomMessageUserUID("Admin");
+            customMessage.setCustomMessageDevice("");
+            customMessage.setMessageTime(Calendar.getInstance().getTimeInMillis());
+            customMessage.setMessageType(100);
+
+            customMessageArrayList.add(customMessage);
+
+
+            customMessage = new CustomMessage();
+            customMessage.setCustomMessageText("We have sent you chrome extension link to your Email address - "+firebaseUser.getEmail() + "\nDownload extension to star using Pc links ");
+
+            customMessage.setCustomMessageUserUID("Admin");
+            customMessage.setCustomMessageDevice("");
+            customMessage.setMessageTime(Calendar.getInstance().getTimeInMillis());
+            customMessage.setMessageType(100);
+
+            customMessageArrayList.add(customMessage);
+
+
+            customMessage = new CustomMessage();
+            customMessage.setCustomMessageText("Exchange text message or link between pc and mobile using Pc links  ");
+            customMessage.setCustomMessageUserUID("Admin");
+            customMessage.setCustomMessageDevice("");
+            customMessage.setMessageTime(Calendar.getInstance().getTimeInMillis());
+            customMessage.setMessageType(100);
+
+            customMessageArrayList.add(customMessage);
+
+
+            customMessage = new CustomMessage();
+            customMessage.setCustomMessageText("For instruction on how to use Pc link \n Click here  ");
+            customMessage.setCustomMessageUserUID("Admin");
+            customMessage.setCustomMessageDevice("");
+            customMessage.setMessageTime(Calendar.getInstance().getTimeInMillis());
+            customMessage.setMessageType(101);
+
+            customMessageArrayList.add(customMessage);
+
+            customMessageAdapter.notifyDataSetChanged();
+
         }
+
 
     }
 
@@ -313,8 +364,19 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view, int position) {
 
-                copyToClipBoard(customMessageArrayList.get(position).getCustomMessageText());
-                Toast.makeText(MainActivity.this, "Message copied", Toast.LENGTH_SHORT).show();
+                CustomMessage customMessage = customMessageArrayList.get(position);
+
+
+                if (customMessage.getMessageType() == 0) {
+                    copyToClipBoard(customMessageArrayList.get(position).getCustomMessageText());
+                    Toast.makeText(MainActivity.this, "Message copied", Toast.LENGTH_SHORT).show();
+                } else if (customMessage.getMessageType() == 101) {
+
+                    openHelpActivity();
+
+                }
+
+
             }
 
             @Override
@@ -542,6 +604,13 @@ public class MainActivity extends AppCompatActivity
         return currentUser.getUid();
     }
 
+    public FirebaseUser getCurrentUser(){
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+
+        return mAuth.getCurrentUser();
+    }
+
 
     public void scrollRecyclerViewToLast() {
         try {
@@ -564,6 +633,7 @@ public class MainActivity extends AppCompatActivity
         progressDialog.setMessage(message);
         progressDialog.show();
     }
+
     private void setNavigationGmailID() {
 
 

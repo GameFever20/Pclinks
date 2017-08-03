@@ -1,7 +1,9 @@
 package utils;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,7 @@ public class CustomMessageAdapter extends RecyclerView.Adapter<CustomMessageAdap
     public class MessageViewHolder extends RecyclerView.ViewHolder {
 
         public TextView messageText ,messageDevice ,messageTimeStamp;
+        CardView backgroundCard;
 
 
 
@@ -35,6 +38,7 @@ public class CustomMessageAdapter extends RecyclerView.Adapter<CustomMessageAdap
             messageDevice =(TextView)view.findViewById(R.id.customAdapter_messageDevice_textView);
             messageTimeStamp =(TextView)view.findViewById(R.id.customAdapter_messageTime_textView);
 
+            backgroundCard =(CardView)view.findViewById(R.id.customAdapter_cardView);
 
 
         }
@@ -66,6 +70,14 @@ public class CustomMessageAdapter extends RecyclerView.Adapter<CustomMessageAdap
 
         holder.messageTimeStamp.setText(customMessage.resolveTimeStamp());
 
+        if (customMessage.getMessageType() == 0){
+            holder.backgroundCard.setCardBackgroundColor(Color.WHITE);
+
+        }else if(customMessage.getMessageType() == 101) {
+            holder.backgroundCard.setCardBackgroundColor(Color.GREEN);
+        }else{
+            holder.backgroundCard.setCardBackgroundColor(Color.WHITE);
+        }
     }
 
 
