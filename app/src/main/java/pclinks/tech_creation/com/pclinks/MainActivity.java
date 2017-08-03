@@ -36,6 +36,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
+import com.crashlytics.android.answers.RatingEvent;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -284,6 +287,17 @@ public class MainActivity extends AppCompatActivity
 
         }
 
+        try {
+            for (CustomMessage customMessage : customMessageArrayList) {
+                if (customMessage.getCustomMessageDevice().equalsIgnoreCase("Chrome")) {
+
+                    Answers.getInstance().logContentView(new ContentViewEvent().putContentName("messaege from chrome extension").putContentId(getCurrentUser().getEmail()));
+                    break;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -627,6 +641,8 @@ public class MainActivity extends AppCompatActivity
         } catch (android.content.ActivityNotFoundException anfe) {
             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
         }
+
+        Answers.getInstance().logRating(new RatingEvent().putContentName(getCurrentUser().getEmail()));
     }
 
     private void shareApp() {
