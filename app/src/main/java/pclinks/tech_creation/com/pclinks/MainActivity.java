@@ -43,6 +43,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.NativeExpressAdView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.tapadoo.alerter.Alerter;
 
 import java.util.ArrayList;
@@ -103,6 +104,8 @@ public class MainActivity extends AppCompatActivity
         recyclerView = (RecyclerView) findViewById(R.id.mainActivity_message_recyclerView);
 
         initializeActivity();
+
+        FirebaseMessaging.getInstance().subscribeToTopic("user_"+getUserUID());
     }
 
     private void initializeads() {
