@@ -1,5 +1,8 @@
 package pclinks.tech_creation.com.pclinks;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -12,6 +15,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -330,6 +334,7 @@ public class MainActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
 
+
                 }
             }
 
@@ -343,6 +348,37 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+
+    }
+
+    private void createNotification(String customMessageText) {
+        Intent intent = new Intent(this, NotificationActivity.class);
+        intent.putExtra("message",customMessageText);
+        PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+
+
+
+
+
+        Notification notification = new NotificationCompat.Builder(this)
+                // Show controls on lock screen even when user hides sensitive content.
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setSmallIcon(R.drawable.ic_menu_camera)
+                .setContentIntent(pIntent)
+                // Add media control buttons that invoke intents in your media service
+                .addAction(R.drawable.ic_action_contact, "Previous", pIntent) // #0
+                .addAction(R.mipmap.ic_launcher, "Pause", pIntent)  // #1
+                // Apply the media style template
+
+                .setContentTitle(customMessageText)
+                .setContentText("My Awesome Band")
+                .build();
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // hide the notification after its selected
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+        notificationManager.notify(0, notification);
 
     }
 

@@ -14,9 +14,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login"
@@ -36,9 +34,9 @@
             android:name="io.fabric.ApiKey"
             android:value="acc1b0b9ec29985ac9dbef0f05837dac47e0b387" />
 
-        <activity android:name=".ShareActionActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            >
+        <activity
+            android:name=".ShareActionActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -46,6 +44,10 @@
 
                 <data android:mimeType="text/plain" />
             </intent-filter>
+        </activity>
+        <activity android:name=".NotificationActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+
         </activity>
     </application>
 
